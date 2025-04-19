@@ -1,11 +1,15 @@
 package com.example.cloudnote;
 
+import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 @RequestMapping("/api/notes")
@@ -15,38 +19,32 @@ public class NoteController {
 
 
     @Autowired
-    private NoteRepository noteRepository;
+    private NoteService noteService;
 
     @GetMapping
     public List<Note> getAllNotes() {
-        return noteRepository.findAll();
+        return noteService.getAllNotes();
     }
 
     @PostMapping
     public Note createNote(@RequestBody NoteDTO noteDto) {
-        Note note = new Note();
-        note.setTitle(noteDto.getTitle());
-        note.setContent(noteDto.getContent()); // ✅ Fixed method name
-        return noteRepository.save(note);
+        Note note = new Note(noteDto.getTitle(), noteDto.getContent());
+        return noteService.createNote(note);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody Note noteDetails) {
-        Note note = noteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Note not found"));
-
-        note.setTitle(noteDetails.getTitle());
-        note.setContent(noteDetails.getContent()); // ✅ Fixed method name
-        return ResponseEntity.ok(noteRepository.save(note));
+        return ResponseEntity.ok(noteService.updateNote(id, noteDetails));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
-        Note note = noteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Note not found"));
-
-        noteRepository.delete(note);
+        noteService.deleteNote(id);
         return ResponseEntity.noContent().build();
     }
+
+
+
+
 
 }
