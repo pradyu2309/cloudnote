@@ -1,7 +1,16 @@
 package com.example.cloudnote;
 
+
+
 import jakarta.persistence.*;
+
+
+
 import java.time.LocalDateTime;
+
+
+import com.example.cloudnote.model.User;
+
 
 @Entity
 public class Note {
@@ -57,4 +66,10 @@ public class Note {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private com.example.cloudnote.model.User user;
+
+
 }
