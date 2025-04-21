@@ -1,0 +1,5 @@
+# Created at 2025-04-21T16:47:06.681
+Boot Manifest-JAR contains absolute paths in classpath 'D:\practicing\cloudnote\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
