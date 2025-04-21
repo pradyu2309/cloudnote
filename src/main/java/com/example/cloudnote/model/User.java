@@ -2,9 +2,13 @@ package com.example.cloudnote.model;
 
 import jakarta.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "\"user\"") // fix: quoted to avoid PostgreSQL reserved keyword error
+@Table(name = "\"user\"") // Quoted for PostgreSQL reserved word
 public class User {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +21,12 @@ public class User {
     private String email;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     public User() {}
+
+    // Getters and setters
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

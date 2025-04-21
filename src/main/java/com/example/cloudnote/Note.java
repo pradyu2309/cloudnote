@@ -67,9 +67,25 @@ public class Note {
         this.createdAt = createdAt;
     }
 
+    public Note(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        this.user = user;
+    }
+
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private com.example.cloudnote.model.User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 
 
 }
