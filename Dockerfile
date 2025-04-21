@@ -1,14 +1,12 @@
-# 1. Use an official OpenJDK image
-FROM openjdk:17-jdk-slim
-
-# 2. Set working directory
+# Step 1: Build the app with Maven
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# 3. Copy Maven target jar into container
-COPY target/cloudnote-0.0.1-SNAPSHOT.jar app.jar
-
-# 4. Expose port (same as Spring Boot runs on)
+# Step 2: Run the JAR with JDK
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=builder /app/target/cloudnote-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-
-# 5. Run the app
 ENTRYPOINT ["java", "-jar", "app.jar"]
